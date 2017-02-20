@@ -25,12 +25,22 @@ class GoogleMaps extends AbstractHttpProvider implements LocaleAwareProvider
     /**
      * @var string
      */
-    const ENDPOINT_URL = 'http://maps.googleapis.com/maps/api/geocode/json?address=%s';
+    const GEOCODE_ENDPOINT_URL = 'http://maps.googleapis.com/maps/api/geocode/json?address=%s';
 
     /**
      * @var string
      */
-    const ENDPOINT_URL_SSL = 'https://maps.googleapis.com/maps/api/geocode/json?address=%s';
+    const GEOCODE_ENDPOINT_URL_SSL = 'https://maps.googleapis.com/maps/api/geocode/json?address=%s';
+
+    /**
+     * @var string
+     */
+    const REVERSE_ENDPOINT_URL = 'http://maps.googleapis.com/maps/api/geocode/json?latlng=%F,%F';
+
+    /**
+     * @var string
+     */
+    const REVERSE_ENDPOINT_URL_SSL = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=%F,%F';
 
     use LocaleTrait;
 
@@ -78,7 +88,7 @@ class GoogleMaps extends AbstractHttpProvider implements LocaleAwareProvider
         }
 
         $query = sprintf(
-            $this->useSsl ? self::ENDPOINT_URL_SSL : self::ENDPOINT_URL,
+            $this->useSsl ? self::GEOCODE_ENDPOINT_URL_SSL : self::GEOCODE_ENDPOINT_URL,
             rawurlencode($address)
         );
 
@@ -90,7 +100,12 @@ class GoogleMaps extends AbstractHttpProvider implements LocaleAwareProvider
      */
     public function reverse($latitude, $longitude)
     {
-        return $this->geocode(sprintf('%F,%F', $latitude, $longitude));
+        $query = sprintf(
+            $this->useSsl ? self::REVERSE_ENDPOINT_URL_SSL : self::REVERSE_ENDPOINT_URL,
+            $latitude, $longitude
+        );
+
+        return $this->executeQuery($query);
     }
 
     /**

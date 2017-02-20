@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+### 3.3.1 (2017-02-20)
+
+* Fixed: GoogleMapsProvider uses invalid url for reverse lookup (#550)
+
 ### 3.3.0 (2015-12-06)
 
 * Added: timezone field for `FreeGeoIp` provider
